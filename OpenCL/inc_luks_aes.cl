@@ -1,7 +1,21 @@
+/**
+ * Author......: See docs/credits.txt
+ * License.....: MIT
+ */
+
+#include "inc_vendor.h"
+#include "inc_types.h"
+#include "inc_platform.h"
+#include "inc_common.h"
+#include "inc_cipher_aes.h"
+#include "inc_luks_af.h"
+#include "inc_luks_essiv.h"
+#include "inc_luks_xts.h"
+#include "inc_luks_aes.h"
 
 // cbc-essiv
 
-static void aes128_decrypt_cbc (const u32 *ks1, const u32 *in, u32 *out, u32 *essiv, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void aes128_decrypt_cbc (const u32 *ks1, const u32 *in, u32 *out, u32 *essiv, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   aes128_decrypt (ks1, in, out, s_td0, s_td1, s_td2, s_td3, s_td4);
 
@@ -16,7 +30,7 @@ static void aes128_decrypt_cbc (const u32 *ks1, const u32 *in, u32 *out, u32 *es
   essiv[3] = in[3];
 }
 
-static void aes256_decrypt_cbc (const u32 *ks1, const u32 *in, u32 *out, u32 *essiv, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void aes256_decrypt_cbc (const u32 *ks1, const u32 *in, u32 *out, u32 *essiv, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   aes256_decrypt (ks1, in, out, s_td0, s_td1, s_td2, s_td3, s_td4);
 
@@ -31,7 +45,7 @@ static void aes256_decrypt_cbc (const u32 *ks1, const u32 *in, u32 *out, u32 *es
   essiv[3] = in[3];
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128 (__global u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128 (GLOBAL_AS const u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -65,7 +79,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128 (__global u32 *in, u32 *out, co
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha1 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_sha1 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -102,7 +116,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha1 (__global u32 *in, u32 
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha1_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_sha1_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -162,7 +176,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha1_final (__global u32 *in
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha256 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_sha256 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -199,7 +213,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha256 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha256_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_sha256_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -259,7 +273,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha256_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha512 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_sha512 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -296,7 +310,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha512 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha512_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_sha512_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -356,7 +370,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_sha512_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_ripemd160 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_ripemd160 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -393,7 +407,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_ripemd160 (__global u32 *in,
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv128_mk_ripemd160_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv128_mk_ripemd160_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -453,7 +467,7 @@ static void luks_decrypt_sector_aes_cbc_essiv128_mk_ripemd160_final (__global u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256 (__global u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256 (GLOBAL_AS const u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -487,7 +501,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256 (__global u32 *in, u32 *out, co
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha1 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_sha1 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -524,7 +538,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha1 (__global u32 *in, u32 
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha1_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_sha1_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -584,7 +598,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha1_final (__global u32 *in
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha256 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_sha256 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -621,7 +635,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha256 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha256_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_sha256_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -681,7 +695,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha256_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha512 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_sha512 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -718,7 +732,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha512 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha512_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_sha512_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -778,7 +792,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_sha512_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_ripemd160 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_ripemd160 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -815,7 +829,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_ripemd160 (__global u32 *in,
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_essiv256_mk_ripemd160_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_essiv256_mk_ripemd160_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -877,7 +891,7 @@ static void luks_decrypt_sector_aes_cbc_essiv256_mk_ripemd160_final (__global u3
 
 // cbc-plain
 
-static void luks_decrypt_sector_aes_cbc_plain128 (__global u32 *in, u32 *out, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128 (GLOBAL_AS const u32 *in, u32 *out, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -907,7 +921,7 @@ static void luks_decrypt_sector_aes_cbc_plain128 (__global u32 *in, u32 *out, co
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_sha1 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_sha1 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -940,7 +954,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_sha1 (__global u32 *in, u32 
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_sha1_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_sha1_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -996,7 +1010,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_sha1_final (__global u32 *in
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_sha256 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_sha256 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1029,7 +1043,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_sha256 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_sha256_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_sha256_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1085,7 +1099,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_sha256_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_sha512 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_sha512 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1118,7 +1132,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_sha512 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_sha512_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_sha512_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1174,7 +1188,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_sha512_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_ripemd160 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_ripemd160 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1207,7 +1221,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_ripemd160 (__global u32 *in,
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain128_mk_ripemd160_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain128_mk_ripemd160_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1263,7 +1277,7 @@ static void luks_decrypt_sector_aes_cbc_plain128_mk_ripemd160_final (__global u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256 (__global u32 *in, u32 *out, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256 (GLOBAL_AS const u32 *in, u32 *out, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1293,7 +1307,7 @@ static void luks_decrypt_sector_aes_cbc_plain256 (__global u32 *in, u32 *out, co
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_sha1 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_sha1 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1326,7 +1340,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_sha1 (__global u32 *in, u32 
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_sha1_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_sha1_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1382,7 +1396,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_sha1_final (__global u32 *in
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_sha256 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_sha256 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1415,7 +1429,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_sha256 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_sha256_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_sha256_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1471,7 +1485,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_sha256_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_sha512 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_sha512 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1504,7 +1518,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_sha512 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_sha512_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_sha512_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1560,7 +1574,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_sha512_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_ripemd160 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_ripemd160 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1593,7 +1607,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_ripemd160 (__global u32 *in,
   }
 }
 
-static void luks_decrypt_sector_aes_cbc_plain256_mk_ripemd160_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_cbc_plain256_mk_ripemd160_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1651,7 +1665,7 @@ static void luks_decrypt_sector_aes_cbc_plain256_mk_ripemd160_final (__global u3
 
 // xts-plain
 
-static void aes128_decrypt_xts (const u32 *ks1, const u32 *in, u32 *out, u32 *T, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void aes128_decrypt_xts (const u32 *ks1, const u32 *in, u32 *out, u32 *T, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   out[0] = in[0];
   out[1] = in[1];
@@ -1673,7 +1687,7 @@ static void aes128_decrypt_xts (const u32 *ks1, const u32 *in, u32 *out, u32 *T,
   xts_mul2 (T, T);
 }
 
-static void aes256_decrypt_xts (const u32 *ks1, const u32 *in, u32 *out, u32 *T, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void aes256_decrypt_xts (const u32 *ks1, const u32 *in, u32 *out, u32 *T, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   out[0] = in[0];
   out[1] = in[1];
@@ -1695,7 +1709,7 @@ static void aes256_decrypt_xts (const u32 *ks1, const u32 *in, u32 *out, u32 *T,
   xts_mul2 (T, T);
 }
 
-static void luks_decrypt_sector_aes_xts_plain256 (__global u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256 (GLOBAL_AS const u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1729,7 +1743,7 @@ static void luks_decrypt_sector_aes_xts_plain256 (__global u32 *in, u32 *out, co
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_sha1 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_sha1 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1766,7 +1780,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_sha1 (__global u32 *in, u32 
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_sha1_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_sha1_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1826,7 +1840,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_sha1_final (__global u32 *in
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_sha256 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_sha256 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1863,7 +1877,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_sha256 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_sha256_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_sha256_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1923,7 +1937,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_sha256_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_sha512 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_sha512 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -1960,7 +1974,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_sha512 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_sha512_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_sha512_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2020,7 +2034,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_sha512_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_ripemd160 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_ripemd160 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2057,7 +2071,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_ripemd160 (__global u32 *in,
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain256_mk_ripemd160_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain256_mk_ripemd160_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2117,7 +2131,7 @@ static void luks_decrypt_sector_aes_xts_plain256_mk_ripemd160_final (__global u3
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512 (__global u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512 (GLOBAL_AS const u32 *in, u32 *out, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2151,7 +2165,7 @@ static void luks_decrypt_sector_aes_xts_plain512 (__global u32 *in, u32 *out, co
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_sha1 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_sha1 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2188,7 +2202,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_sha1 (__global u32 *in, u32 
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_sha1_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_sha1_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2248,7 +2262,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_sha1_final (__global u32 *in
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_sha256 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_sha256 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2285,7 +2299,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_sha256 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_sha256_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_sha256_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2345,7 +2359,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_sha256_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_sha512 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_sha512 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2382,7 +2396,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_sha512 (__global u32 *in, u3
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_sha512_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_sha512_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2442,7 +2456,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_sha512_final (__global u32 *
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_ripemd160 (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_ripemd160 (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2479,7 +2493,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_ripemd160 (__global u32 *in,
   }
 }
 
-static void luks_decrypt_sector_aes_xts_plain512_mk_ripemd160_final (__global u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_decrypt_sector_aes_xts_plain512_mk_ripemd160_final (GLOBAL_AS const u32 *in, u32 *mk, const u32 *ks1, const u32 *ks2, const u32 sector, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   u32 S[4] = { sector, 0, 0, 0 };
 
@@ -2541,7 +2555,7 @@ static void luks_decrypt_sector_aes_xts_plain512_mk_ripemd160_final (__global u3
 
 // luks helper
 
-static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_af_sha1_then_aes_decrypt (GLOBAL_AS const luks_t *luks_bufs, GLOBAL_AS luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   const u32 key_size    = luks_bufs->key_size;
   const u32 cipher_mode = luks_bufs->cipher_mode;
@@ -2563,10 +2577,10 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
     {
       u32 ukey[4];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
 
       u32 essivhash[8];
 
@@ -2575,8 +2589,8 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -2592,14 +2606,14 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
     {
       u32 ukey[8];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
-      ukey[4] = swap32_S (tmps->out32[4]);
-      ukey[5] = swap32_S (tmps->out32[5]);
-      ukey[6] = swap32_S (tmps->out32[6]);
-      ukey[7] = swap32_S (tmps->out32[7]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
+      ukey[4] = hc_swap32_S (tmps->out32[4]);
+      ukey[5] = hc_swap32_S (tmps->out32[5]);
+      ukey[6] = hc_swap32_S (tmps->out32[6]);
+      ukey[7] = hc_swap32_S (tmps->out32[7]);
 
       u32 essivhash[8];
 
@@ -2608,8 +2622,8 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -2628,14 +2642,14 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
     {
       u32 ukey[4];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -2651,18 +2665,18 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
     {
       u32 ukey[8];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
-      ukey[4] = swap32_S (tmps->out32[4]);
-      ukey[5] = swap32_S (tmps->out32[5]);
-      ukey[6] = swap32_S (tmps->out32[6]);
-      ukey[7] = swap32_S (tmps->out32[7]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
+      ukey[4] = hc_swap32_S (tmps->out32[4]);
+      ukey[5] = hc_swap32_S (tmps->out32[5]);
+      ukey[6] = hc_swap32_S (tmps->out32[6]);
+      ukey[7] = hc_swap32_S (tmps->out32[7]);
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -2681,23 +2695,23 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
     {
       u32 ukey1[4];
 
-      ukey1[0] = swap32_S (tmps->out32[0]);
-      ukey1[1] = swap32_S (tmps->out32[1]);
-      ukey1[2] = swap32_S (tmps->out32[2]);
-      ukey1[3] = swap32_S (tmps->out32[3]);
+      ukey1[0] = hc_swap32_S (tmps->out32[0]);
+      ukey1[1] = hc_swap32_S (tmps->out32[1]);
+      ukey1[2] = hc_swap32_S (tmps->out32[2]);
+      ukey1[3] = hc_swap32_S (tmps->out32[3]);
 
       u32 ukey2[4];
 
-      ukey2[0] = swap32_S (tmps->out32[4]);
-      ukey2[1] = swap32_S (tmps->out32[5]);
-      ukey2[2] = swap32_S (tmps->out32[6]);
-      ukey2[3] = swap32_S (tmps->out32[7]);
+      ukey2[0] = hc_swap32_S (tmps->out32[4]);
+      ukey2[1] = hc_swap32_S (tmps->out32[5]);
+      ukey2[2] = hc_swap32_S (tmps->out32[6]);
+      ukey2[3] = hc_swap32_S (tmps->out32[7]);
 
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -2713,31 +2727,31 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
     {
       u32 ukey1[8];
 
-      ukey1[0] = swap32_S (tmps->out32[ 0]);
-      ukey1[1] = swap32_S (tmps->out32[ 1]);
-      ukey1[2] = swap32_S (tmps->out32[ 2]);
-      ukey1[3] = swap32_S (tmps->out32[ 3]);
-      ukey1[4] = swap32_S (tmps->out32[ 4]);
-      ukey1[5] = swap32_S (tmps->out32[ 5]);
-      ukey1[6] = swap32_S (tmps->out32[ 6]);
-      ukey1[7] = swap32_S (tmps->out32[ 7]);
+      ukey1[0] = hc_swap32_S (tmps->out32[ 0]);
+      ukey1[1] = hc_swap32_S (tmps->out32[ 1]);
+      ukey1[2] = hc_swap32_S (tmps->out32[ 2]);
+      ukey1[3] = hc_swap32_S (tmps->out32[ 3]);
+      ukey1[4] = hc_swap32_S (tmps->out32[ 4]);
+      ukey1[5] = hc_swap32_S (tmps->out32[ 5]);
+      ukey1[6] = hc_swap32_S (tmps->out32[ 6]);
+      ukey1[7] = hc_swap32_S (tmps->out32[ 7]);
 
       u32 ukey2[8];
 
-      ukey2[0] = swap32_S (tmps->out32[ 8]);
-      ukey2[1] = swap32_S (tmps->out32[ 9]);
-      ukey2[2] = swap32_S (tmps->out32[10]);
-      ukey2[3] = swap32_S (tmps->out32[11]);
-      ukey2[4] = swap32_S (tmps->out32[12]);
-      ukey2[5] = swap32_S (tmps->out32[13]);
-      ukey2[6] = swap32_S (tmps->out32[14]);
-      ukey2[7] = swap32_S (tmps->out32[15]);
+      ukey2[0] = hc_swap32_S (tmps->out32[ 8]);
+      ukey2[1] = hc_swap32_S (tmps->out32[ 9]);
+      ukey2[2] = hc_swap32_S (tmps->out32[10]);
+      ukey2[3] = hc_swap32_S (tmps->out32[11]);
+      ukey2[4] = hc_swap32_S (tmps->out32[12]);
+      ukey2[5] = hc_swap32_S (tmps->out32[13]);
+      ukey2[6] = hc_swap32_S (tmps->out32[14]);
+      ukey2[7] = hc_swap32_S (tmps->out32[15]);
 
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -2757,7 +2771,11 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
   {
     if (key_size == HC_LUKS_KEY_SIZE_128)
     {
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey[4];
+      #else
+      u32 ukey[4];
+      #endif
 
       ukey[0] = mk[0];
       ukey[1] = mk[1];
@@ -2771,14 +2789,18 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv128 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
     else if (key_size == HC_LUKS_KEY_SIZE_256)
     {
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey[8];
+      #else
+      u32 ukey[8];
+      #endif
 
       ukey[0] = mk[0];
       ukey[1] = mk[1];
@@ -2796,8 +2818,8 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -2806,7 +2828,11 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
   {
     if (key_size == HC_LUKS_KEY_SIZE_128)
     {
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey[4];
+      #else
+      u32 ukey[4];
+      #endif
 
       ukey[0] = mk[0];
       ukey[1] = mk[1];
@@ -2815,13 +2841,17 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain128 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
     else if (key_size == HC_LUKS_KEY_SIZE_256)
     {
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey[8];
+      #else
+      u32 ukey[8];
+      #endif
 
       ukey[0] = mk[0];
       ukey[1] = mk[1];
@@ -2834,7 +2864,7 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain256 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -2843,14 +2873,22 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
   {
     if (key_size == HC_LUKS_KEY_SIZE_256)
     {
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey1[4];
+      #else
+      u32 ukey1[4];
+      #endif
 
       ukey1[0] = mk[0];
       ukey1[1] = mk[1];
       ukey1[2] = mk[2];
       ukey1[3] = mk[3];
 
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey2[4];
+      #else
+      u32 ukey2[4];
+      #endif
 
       ukey2[0] = mk[4];
       ukey2[1] = mk[5];
@@ -2860,14 +2898,18 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
     else if (key_size == HC_LUKS_KEY_SIZE_512)
     {
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey1[8];
+      #else
+      u32 ukey1[8];
+      #endif
 
       ukey1[0] = mk[ 0];
       ukey1[1] = mk[ 1];
@@ -2878,7 +2920,11 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       ukey1[6] = mk[ 6];
       ukey1[7] = mk[ 7];
 
+      #if defined (IS_APPLE) && defined (IS_GPU)
       u32 ukey2[8];
+      #else
+      u32 ukey2[8];
+      #endif
 
       ukey2[0] = mk[ 8];
       ukey2[1] = mk[ 9];
@@ -2892,15 +2938,15 @@ static void luks_af_sha1_then_aes_decrypt (__global luks_t *luks_bufs, __global 
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain512 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
   }
 }
 
-static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __global luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_af_sha256_then_aes_decrypt (GLOBAL_AS const luks_t *luks_bufs, GLOBAL_AS luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   const u32 key_size    = luks_bufs->key_size;
   const u32 cipher_mode = luks_bufs->cipher_mode;
@@ -2922,10 +2968,10 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[4];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
 
       u32 essivhash[8];
 
@@ -2934,8 +2980,8 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -2951,14 +2997,14 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[8];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
-      ukey[4] = swap32_S (tmps->out32[4]);
-      ukey[5] = swap32_S (tmps->out32[5]);
-      ukey[6] = swap32_S (tmps->out32[6]);
-      ukey[7] = swap32_S (tmps->out32[7]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
+      ukey[4] = hc_swap32_S (tmps->out32[4]);
+      ukey[5] = hc_swap32_S (tmps->out32[5]);
+      ukey[6] = hc_swap32_S (tmps->out32[6]);
+      ukey[7] = hc_swap32_S (tmps->out32[7]);
 
       u32 essivhash[8];
 
@@ -2967,8 +3013,8 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -2987,14 +3033,14 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[4];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -3010,18 +3056,18 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[8];
 
-      ukey[0] = swap32_S (tmps->out32[0]);
-      ukey[1] = swap32_S (tmps->out32[1]);
-      ukey[2] = swap32_S (tmps->out32[2]);
-      ukey[3] = swap32_S (tmps->out32[3]);
-      ukey[4] = swap32_S (tmps->out32[4]);
-      ukey[5] = swap32_S (tmps->out32[5]);
-      ukey[6] = swap32_S (tmps->out32[6]);
-      ukey[7] = swap32_S (tmps->out32[7]);
+      ukey[0] = hc_swap32_S (tmps->out32[0]);
+      ukey[1] = hc_swap32_S (tmps->out32[1]);
+      ukey[2] = hc_swap32_S (tmps->out32[2]);
+      ukey[3] = hc_swap32_S (tmps->out32[3]);
+      ukey[4] = hc_swap32_S (tmps->out32[4]);
+      ukey[5] = hc_swap32_S (tmps->out32[5]);
+      ukey[6] = hc_swap32_S (tmps->out32[6]);
+      ukey[7] = hc_swap32_S (tmps->out32[7]);
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -3040,23 +3086,23 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey1[4];
 
-      ukey1[0] = swap32_S (tmps->out32[0]);
-      ukey1[1] = swap32_S (tmps->out32[1]);
-      ukey1[2] = swap32_S (tmps->out32[2]);
-      ukey1[3] = swap32_S (tmps->out32[3]);
+      ukey1[0] = hc_swap32_S (tmps->out32[0]);
+      ukey1[1] = hc_swap32_S (tmps->out32[1]);
+      ukey1[2] = hc_swap32_S (tmps->out32[2]);
+      ukey1[3] = hc_swap32_S (tmps->out32[3]);
 
       u32 ukey2[4];
 
-      ukey2[0] = swap32_S (tmps->out32[4]);
-      ukey2[1] = swap32_S (tmps->out32[5]);
-      ukey2[2] = swap32_S (tmps->out32[6]);
-      ukey2[3] = swap32_S (tmps->out32[7]);
+      ukey2[0] = hc_swap32_S (tmps->out32[4]);
+      ukey2[1] = hc_swap32_S (tmps->out32[5]);
+      ukey2[2] = hc_swap32_S (tmps->out32[6]);
+      ukey2[3] = hc_swap32_S (tmps->out32[7]);
 
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3072,31 +3118,31 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey1[8];
 
-      ukey1[0] = swap32_S (tmps->out32[ 0]);
-      ukey1[1] = swap32_S (tmps->out32[ 1]);
-      ukey1[2] = swap32_S (tmps->out32[ 2]);
-      ukey1[3] = swap32_S (tmps->out32[ 3]);
-      ukey1[4] = swap32_S (tmps->out32[ 4]);
-      ukey1[5] = swap32_S (tmps->out32[ 5]);
-      ukey1[6] = swap32_S (tmps->out32[ 6]);
-      ukey1[7] = swap32_S (tmps->out32[ 7]);
+      ukey1[0] = hc_swap32_S (tmps->out32[ 0]);
+      ukey1[1] = hc_swap32_S (tmps->out32[ 1]);
+      ukey1[2] = hc_swap32_S (tmps->out32[ 2]);
+      ukey1[3] = hc_swap32_S (tmps->out32[ 3]);
+      ukey1[4] = hc_swap32_S (tmps->out32[ 4]);
+      ukey1[5] = hc_swap32_S (tmps->out32[ 5]);
+      ukey1[6] = hc_swap32_S (tmps->out32[ 6]);
+      ukey1[7] = hc_swap32_S (tmps->out32[ 7]);
 
       u32 ukey2[8];
 
-      ukey2[0] = swap32_S (tmps->out32[ 8]);
-      ukey2[1] = swap32_S (tmps->out32[ 9]);
-      ukey2[2] = swap32_S (tmps->out32[10]);
-      ukey2[3] = swap32_S (tmps->out32[11]);
-      ukey2[4] = swap32_S (tmps->out32[12]);
-      ukey2[5] = swap32_S (tmps->out32[13]);
-      ukey2[6] = swap32_S (tmps->out32[14]);
-      ukey2[7] = swap32_S (tmps->out32[15]);
+      ukey2[0] = hc_swap32_S (tmps->out32[ 8]);
+      ukey2[1] = hc_swap32_S (tmps->out32[ 9]);
+      ukey2[2] = hc_swap32_S (tmps->out32[10]);
+      ukey2[3] = hc_swap32_S (tmps->out32[11]);
+      ukey2[4] = hc_swap32_S (tmps->out32[12]);
+      ukey2[5] = hc_swap32_S (tmps->out32[13]);
+      ukey2[6] = hc_swap32_S (tmps->out32[14]);
+      ukey2[7] = hc_swap32_S (tmps->out32[15]);
 
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3130,8 +3176,8 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv128 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3155,8 +3201,8 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3174,7 +3220,7 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain128 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3193,7 +3239,7 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain256 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3219,8 +3265,8 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3251,15 +3297,15 @@ static void luks_af_sha256_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain512 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
   }
 }
 
-static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __global luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_af_sha512_then_aes_decrypt (GLOBAL_AS const luks_t *luks_bufs, GLOBAL_AS luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   const u32 key_size    = luks_bufs->key_size;
   const u32 cipher_mode = luks_bufs->cipher_mode;
@@ -3271,6 +3317,25 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
   #define OFFSET_PER_BLOCK (16 / 4)
   #define OFFSET_PER_SECTOR (BLOCKS_PER_SECTOR * OFFSET_PER_BLOCK)
 
+  // move data from out64 to out32
+
+  tmps->out32[ 0] = l32_from_64_S (tmps->out64[0]);
+  tmps->out32[ 1] = h32_from_64_S (tmps->out64[0]);
+  tmps->out32[ 2] = l32_from_64_S (tmps->out64[1]);
+  tmps->out32[ 3] = h32_from_64_S (tmps->out64[1]);
+  tmps->out32[ 4] = l32_from_64_S (tmps->out64[2]);
+  tmps->out32[ 5] = h32_from_64_S (tmps->out64[2]);
+  tmps->out32[ 6] = l32_from_64_S (tmps->out64[3]);
+  tmps->out32[ 7] = h32_from_64_S (tmps->out64[3]);
+  tmps->out32[ 8] = l32_from_64_S (tmps->out64[4]);
+  tmps->out32[ 9] = h32_from_64_S (tmps->out64[4]);
+  tmps->out32[10] = l32_from_64_S (tmps->out64[5]);
+  tmps->out32[11] = h32_from_64_S (tmps->out64[5]);
+  tmps->out32[12] = l32_from_64_S (tmps->out64[6]);
+  tmps->out32[13] = h32_from_64_S (tmps->out64[6]);
+  tmps->out32[14] = l32_from_64_S (tmps->out64[7]);
+  tmps->out32[15] = h32_from_64_S (tmps->out64[7]);
+
   // decrypt AF data and do the AF merge inline
 
   u32 mk[16] = { 0 };
@@ -3281,10 +3346,10 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[4];
 
-      ukey[0] = swap32_S (tmps->out32[1]);
-      ukey[1] = swap32_S (tmps->out32[0]);
-      ukey[2] = swap32_S (tmps->out32[3]);
-      ukey[3] = swap32_S (tmps->out32[2]);
+      ukey[0] = hc_swap32_S (tmps->out32[1]);
+      ukey[1] = hc_swap32_S (tmps->out32[0]);
+      ukey[2] = hc_swap32_S (tmps->out32[3]);
+      ukey[3] = hc_swap32_S (tmps->out32[2]);
 
       u32 essivhash[8];
 
@@ -3293,8 +3358,8 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3310,14 +3375,14 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[8];
 
-      ukey[0] = swap32_S (tmps->out32[1]);
-      ukey[1] = swap32_S (tmps->out32[0]);
-      ukey[2] = swap32_S (tmps->out32[3]);
-      ukey[3] = swap32_S (tmps->out32[2]);
-      ukey[4] = swap32_S (tmps->out32[5]);
-      ukey[5] = swap32_S (tmps->out32[4]);
-      ukey[6] = swap32_S (tmps->out32[7]);
-      ukey[7] = swap32_S (tmps->out32[6]);
+      ukey[0] = hc_swap32_S (tmps->out32[1]);
+      ukey[1] = hc_swap32_S (tmps->out32[0]);
+      ukey[2] = hc_swap32_S (tmps->out32[3]);
+      ukey[3] = hc_swap32_S (tmps->out32[2]);
+      ukey[4] = hc_swap32_S (tmps->out32[5]);
+      ukey[5] = hc_swap32_S (tmps->out32[4]);
+      ukey[6] = hc_swap32_S (tmps->out32[7]);
+      ukey[7] = hc_swap32_S (tmps->out32[6]);
 
       u32 essivhash[8];
 
@@ -3326,8 +3391,8 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3346,14 +3411,14 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[4];
 
-      ukey[0] = swap32_S (tmps->out32[1]);
-      ukey[1] = swap32_S (tmps->out32[0]);
-      ukey[2] = swap32_S (tmps->out32[3]);
-      ukey[3] = swap32_S (tmps->out32[2]);
+      ukey[0] = hc_swap32_S (tmps->out32[1]);
+      ukey[1] = hc_swap32_S (tmps->out32[0]);
+      ukey[2] = hc_swap32_S (tmps->out32[3]);
+      ukey[3] = hc_swap32_S (tmps->out32[2]);
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -3369,18 +3434,18 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey[8];
 
-      ukey[0] = swap32_S (tmps->out32[1]);
-      ukey[1] = swap32_S (tmps->out32[0]);
-      ukey[2] = swap32_S (tmps->out32[3]);
-      ukey[3] = swap32_S (tmps->out32[2]);
-      ukey[4] = swap32_S (tmps->out32[5]);
-      ukey[5] = swap32_S (tmps->out32[4]);
-      ukey[6] = swap32_S (tmps->out32[7]);
-      ukey[7] = swap32_S (tmps->out32[6]);
+      ukey[0] = hc_swap32_S (tmps->out32[1]);
+      ukey[1] = hc_swap32_S (tmps->out32[0]);
+      ukey[2] = hc_swap32_S (tmps->out32[3]);
+      ukey[3] = hc_swap32_S (tmps->out32[2]);
+      ukey[4] = hc_swap32_S (tmps->out32[5]);
+      ukey[5] = hc_swap32_S (tmps->out32[4]);
+      ukey[6] = hc_swap32_S (tmps->out32[7]);
+      ukey[7] = hc_swap32_S (tmps->out32[6]);
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -3399,23 +3464,23 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey1[4];
 
-      ukey1[0] = swap32_S (tmps->out32[1]);
-      ukey1[1] = swap32_S (tmps->out32[0]);
-      ukey1[2] = swap32_S (tmps->out32[3]);
-      ukey1[3] = swap32_S (tmps->out32[2]);
+      ukey1[0] = hc_swap32_S (tmps->out32[1]);
+      ukey1[1] = hc_swap32_S (tmps->out32[0]);
+      ukey1[2] = hc_swap32_S (tmps->out32[3]);
+      ukey1[3] = hc_swap32_S (tmps->out32[2]);
 
       u32 ukey2[4];
 
-      ukey2[0] = swap32_S (tmps->out32[5]);
-      ukey2[1] = swap32_S (tmps->out32[4]);
-      ukey2[2] = swap32_S (tmps->out32[7]);
-      ukey2[3] = swap32_S (tmps->out32[6]);
+      ukey2[0] = hc_swap32_S (tmps->out32[5]);
+      ukey2[1] = hc_swap32_S (tmps->out32[4]);
+      ukey2[2] = hc_swap32_S (tmps->out32[7]);
+      ukey2[3] = hc_swap32_S (tmps->out32[6]);
 
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3431,31 +3496,31 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
     {
       u32 ukey1[8];
 
-      ukey1[0] = swap32_S (tmps->out32[ 1]);
-      ukey1[1] = swap32_S (tmps->out32[ 0]);
-      ukey1[2] = swap32_S (tmps->out32[ 3]);
-      ukey1[3] = swap32_S (tmps->out32[ 2]);
-      ukey1[4] = swap32_S (tmps->out32[ 5]);
-      ukey1[5] = swap32_S (tmps->out32[ 4]);
-      ukey1[6] = swap32_S (tmps->out32[ 7]);
-      ukey1[7] = swap32_S (tmps->out32[ 6]);
+      ukey1[0] = hc_swap32_S (tmps->out32[ 1]);
+      ukey1[1] = hc_swap32_S (tmps->out32[ 0]);
+      ukey1[2] = hc_swap32_S (tmps->out32[ 3]);
+      ukey1[3] = hc_swap32_S (tmps->out32[ 2]);
+      ukey1[4] = hc_swap32_S (tmps->out32[ 5]);
+      ukey1[5] = hc_swap32_S (tmps->out32[ 4]);
+      ukey1[6] = hc_swap32_S (tmps->out32[ 7]);
+      ukey1[7] = hc_swap32_S (tmps->out32[ 6]);
 
       u32 ukey2[8];
 
-      ukey2[0] = swap32_S (tmps->out32[ 9]);
-      ukey2[1] = swap32_S (tmps->out32[ 8]);
-      ukey2[2] = swap32_S (tmps->out32[11]);
-      ukey2[3] = swap32_S (tmps->out32[10]);
-      ukey2[4] = swap32_S (tmps->out32[13]);
-      ukey2[5] = swap32_S (tmps->out32[12]);
-      ukey2[6] = swap32_S (tmps->out32[15]);
-      ukey2[7] = swap32_S (tmps->out32[14]);
+      ukey2[0] = hc_swap32_S (tmps->out32[ 9]);
+      ukey2[1] = hc_swap32_S (tmps->out32[ 8]);
+      ukey2[2] = hc_swap32_S (tmps->out32[11]);
+      ukey2[3] = hc_swap32_S (tmps->out32[10]);
+      ukey2[4] = hc_swap32_S (tmps->out32[13]);
+      ukey2[5] = hc_swap32_S (tmps->out32[12]);
+      ukey2[6] = hc_swap32_S (tmps->out32[15]);
+      ukey2[7] = hc_swap32_S (tmps->out32[14]);
 
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3489,8 +3554,8 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv128 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3514,8 +3579,8 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3533,7 +3598,7 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain128 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3552,7 +3617,7 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain256 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3578,8 +3643,8 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3610,15 +3675,15 @@ static void luks_af_sha512_then_aes_decrypt (__global luks_t *luks_bufs, __globa
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain512 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
   }
 }
 
-static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __global luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
+DECLSPEC void luks_af_ripemd160_then_aes_decrypt (GLOBAL_AS const luks_t *luks_bufs, GLOBAL_AS luks_tmp_t *tmps, u32 *pt_buf, SHM_TYPE u32 *s_te0, SHM_TYPE u32 *s_te1, SHM_TYPE u32 *s_te2, SHM_TYPE u32 *s_te3, SHM_TYPE u32 *s_te4, SHM_TYPE u32 *s_td0, SHM_TYPE u32 *s_td1, SHM_TYPE u32 *s_td2, SHM_TYPE u32 *s_td3, SHM_TYPE u32 *s_td4)
 {
   const u32 key_size    = luks_bufs->key_size;
   const u32 cipher_mode = luks_bufs->cipher_mode;
@@ -3652,8 +3717,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3685,8 +3750,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3712,7 +3777,7 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -3739,7 +3804,7 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       int sector = 0;
       int offset = 0;
@@ -3773,8 +3838,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3813,8 +3878,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       int sector = 0;
       int offset = 0;
@@ -3848,8 +3913,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[44];
       u32 ks2[60];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv128 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3873,8 +3938,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, essivhash, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_cbc_essiv256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3892,7 +3957,7 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
 
       u32 ks1[44];
 
-      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes128_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain128 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3911,7 +3976,7 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
 
       u32 ks1[60];
 
-      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
+      aes256_set_decrypt_key (ks1, ukey, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
 
       luks_decrypt_sector_aes_cbc_plain256 (luks_bufs->ct_buf, pt_buf, ks1, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3937,8 +4002,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[44];
       u32 ks2[44];
 
-      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes128_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes128_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain256 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }
@@ -3969,8 +4034,8 @@ static void luks_af_ripemd160_then_aes_decrypt (__global luks_t *luks_bufs, __gl
       u32 ks1[60];
       u32 ks2[60];
 
-      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
-      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3, s_te4);
+      aes256_set_decrypt_key (ks1, ukey1, s_te0, s_te1, s_te2, s_te3, s_td0, s_td1, s_td2, s_td3);
+      aes256_set_encrypt_key (ks2, ukey2, s_te0, s_te1, s_te2, s_te3);
 
       luks_decrypt_sector_aes_xts_plain512 (luks_bufs->ct_buf, pt_buf, ks1, ks2, 0, s_te0, s_te1, s_te2, s_te3, s_te4, s_td0, s_td1, s_td2, s_td3, s_td4);
     }

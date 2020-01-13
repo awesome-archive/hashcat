@@ -7,20 +7,9 @@
 #include "types.h"
 #include "memory.h"
 #include "event.h"
-#include "logfile.h"
 #include "locking.h"
 #include "shared.h"
-
-static u32 logfile_generate_id (void)
-{
-  const u32 n = (u32) rand ();
-
-  time_t t;
-
-  time (&t);
-
-  return (u32) t + n;
-}
+#include "logfile.h"
 
 void logfile_generate_topid (hashcat_ctx_t *hashcat_ctx)
 {
@@ -28,9 +17,11 @@ void logfile_generate_topid (hashcat_ctx_t *hashcat_ctx)
 
   if (logfile_ctx->enabled == false) return;
 
-  const u32 id = logfile_generate_id ();
+  struct timeval v;
 
-  snprintf (logfile_ctx->topid, 1 + 16, "TOP%08x", id);
+  gettimeofday (&v, NULL);
+
+  snprintf (logfile_ctx->topid, 40, "TOP.%08x.%08x", (u32) v.tv_sec, (u32) v.tv_usec);
 }
 
 void logfile_generate_subid (hashcat_ctx_t *hashcat_ctx)
@@ -39,9 +30,11 @@ void logfile_generate_subid (hashcat_ctx_t *hashcat_ctx)
 
   if (logfile_ctx->enabled == false) return;
 
-  const u32 id = logfile_generate_id ();
+  struct timeval v;
 
-  snprintf (logfile_ctx->subid, 1 + 16, "SUB%08x", id);
+  gettimeofday (&v, NULL);
+
+  snprintf (logfile_ctx->subid, 40, "SUB.%08x.%08x", (u32) v.tv_sec, (u32) v.tv_usec);
 }
 
 void logfile_append (hashcat_ctx_t *hashcat_ctx, const char *fmt, ...)
@@ -50,30 +43,30 @@ void logfile_append (hashcat_ctx_t *hashcat_ctx, const char *fmt, ...)
 
   if (logfile_ctx->enabled == false) return;
 
-  FILE *fp = fopen (logfile_ctx->logfile, "ab");
+  HCFILE fp;
 
-  if (fp == NULL)
+  if (hc_fopen (&fp, logfile_ctx->logfile, "ab") == false)
   {
     event_log_error (hashcat_ctx, "%s: %s", logfile_ctx->logfile, strerror (errno));
 
     return;
   }
 
-  lock_file (fp);
+  hc_lockfile (&fp);
 
   va_list ap;
 
   va_start (ap, fmt);
 
-  vfprintf (fp, fmt, ap);
+  hc_vfprintf (&fp, fmt, ap);
 
   va_end (ap);
 
-  fwrite (EOL, strlen (EOL), 1, fp);
+  hc_fwrite (EOL, strlen (EOL), 1, &fp);
 
-  fflush (fp);
+  hc_fflush (&fp);
 
-  fclose (fp);
+  hc_fclose (&fp);
 }
 
 int logfile_init (hashcat_ctx_t *hashcat_ctx)
